@@ -1,0 +1,12 @@
+<launch>
+    <!-- Lancer un monde Gazebo vide -->
+    <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_empty_world.launch"/>
+
+    <!-- Charger le modèle du TurtleBot3 avec la caméra -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find projet_ros)/urdf/turtlebot3_burger_camera.urdf.xacro'" />
+
+    <!-- Publier l'état du robot -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+        <param name="robot_description" command="$(find xacro)/xacro '$(find projet_ros)/urdf/turtlebot3_burger_camera.urdf.xacro'"/>
+    </node>
+</launch>
