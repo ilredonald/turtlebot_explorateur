@@ -4,6 +4,9 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 #include <image_transport/image_transport.h>
+#include <std_msgs/Bool.h>
+
+ros::Publisher arret_pub;
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg, image_transport::Publisher& pub)
 {
@@ -32,7 +35,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, image_transport::Publi
         // Trouver les contours de la zone rouge détectée
         std::vector<std::vector<cv::Point>> contours;
         cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
+        bool obstacle_detecte = false;
+        std_msgs::Bool stop_msg;
         // Dessiner un rectangle vert autour de chaque objet rouge détecté
         for (size_t i = 0; i < contours.size(); i++)
         {
@@ -43,9 +47,11 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, image_transport::Publi
                 cv::Rect bounding_box = cv::boundingRect(contours[i]);
                 // Dessiner un rectangle vert
                 cv::rectangle(cv_ptr->image, bounding_box, cv::Scalar(0, 255, 0), 2);
+                obstacle_detecte = true;
+                stop_msg.data = obstacle_detecte;
             }
         }
-
+        arret_pub.publish(stop_msg);
         // Afficher l'image avec le rectangle vert
         cv::imshow("Detected Red Object", cv_ptr->image);
         cv::waitKey(1);  // Nécessaire pour que l'image s'affiche dans OpenCV
@@ -71,9 +77,9 @@ int main(int argc, char** argv)
     image_transport::Publisher pub = it.advertise("/processed_image", 1);
 
     // Subscribe with properly bound callback
-    image_transport::Subscriber sub = it.subscribe("/image_to_process", 1, 
-        boost::bind(imageCallback, _1, boost::ref(pub)));
-        
+    image_transport::Subscriber sub = it.subscribe("/image_to_process", 1,boost::bind(imageCallback, _1, boost::ref(pub)));
+    
+    arret_pub = nh.advertise<std_msgs::Bool>("/arret_demande", 10);
     ros::Rate loop_rate(10);
 
     while (ros::ok())

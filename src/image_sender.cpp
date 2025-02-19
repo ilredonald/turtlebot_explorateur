@@ -4,6 +4,9 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 #include <image_transport/image_transport.h>
+#include <std_msgs/Bool.h>
+
+//ros::Publisher pub;
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
@@ -15,7 +18,10 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
         // Afficher l'image traitée
         cv::imshow("Processed Image", cv_ptr->image);
         cv::waitKey(1);
-
+       //bool obstacle_detecte = true; 
+        //std_msgs::Bool stop_msg;
+        //stop_msg.data = obstacle_detecte;
+        //pub.publish(stop_msg);
         // Si tu veux renvoyer des informations sur l'objet, tu pourrais publier un message sur un autre topic
         // Par exemple, publier la position de l'objet détecté
         // Exemple avec une position fictive
@@ -35,7 +41,7 @@ int main(int argc, char** argv)
     // Souscrire au topic de l'image traitée
     image_transport::ImageTransport it(nh);
     image_transport::Subscriber sub = it.subscribe("/processed_image", 1, imageCallback);
-
+    //pub = nh.advertise<std_msgs::Bool>("/arret_demande", 10);
     ros::Rate loop_rate(10);
 
     while (ros::ok())
