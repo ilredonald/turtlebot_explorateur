@@ -2,21 +2,21 @@
 
 **Ce depôt a deux packages** :
 
-●`detection` qui gère la detection et le marquages des motifs détectés sur la carte.
+●**`detection`** qui gère la detection et le marquages des motifs détectés sur la carte.
 
-●`frontier_exploration` qui gére la navigation autonome du robot et de la cartographie de l'arène.
+●**`frontier_exploration`** qui gére la navigation autonome du robot et de la cartographie de l'arène.
 
 ## les noeuds dans le package `detection` :
 
 dans ce package nous avons 6 noeuds :
 
-➔**`objectrecognition`** : Ce nœud est conçu pour effectuer la détection d'objets dans les images en utilisant un modèle pré-entraîné YOLO (You Only Look Once). Lorsqu'un objet est détecté avec une confiance supérieure à un seuil défini, il dessine un rectangle autour de l'objet et republie l'image annotée.
+➔ **`objectrecognition`** : Ce nœud est conçu pour effectuer la détection d'objets dans les images en utilisant un modèle pré-entraîné YOLO (You Only Look Once). Lorsqu'un objet est détecté avec une confiance supérieure à un seuil défini, il dessine un rectangle autour de l'objet et republie l'image annotée.
 
 **Entrées** : Image (de type `sensor_msgs/Image`) via le topic `/camera/image` (provient d'une caméra ou d'un nœud de traitement d'image).
 
 **Sorties** : Image annotée avec des rectangles autour des objets détectés (de type `sensor_msgs/Image`), publiée sur le topic `/camera/image_squared`.
 
-➔ `turtlebot_distance_estimator` : Ce nœud calcule la distance d'un objet (carré vert) à partir de l'image capturée par la caméra, en utilisant des informations de la caméra et de l'odométrie du robot. Il publie la position estimée de l'objet dans le repère global du robot.
+➔ **`turtlebot_distance_estimator`** : Ce nœud calcule la distance d'un objet (carré vert) à partir de l'image capturée par la caméra, en utilisant des informations de la caméra et de l'odométrie du robot. Il publie la position estimée de l'objet dans le repère global du robot.
 
 **Entrées** : 
     Image de la caméra (`sensor_msgs/Image`) via le topic `/camera/image_squared`.
