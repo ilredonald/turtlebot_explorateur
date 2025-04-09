@@ -1,3 +1,7 @@
+## TURTLEBOT EXPLORATEUR:
+
+Ce document présente le fonctionnement d’un TurtleBot capable d’explorer un environnement inconnu de manière autonome et de détecter des motifs présents dans l’arène. Le robot utilise ROS, le LIDAR et une caméra pour naviguer et reconnaître certains éléments
+
 ## 🚀 Lancement de la détection
 
 ✅ **Lancer le launch `projet.launch` du package `detection`:**
@@ -13,7 +17,7 @@ choisir `Visualization` et cliquer sur `Image View`et enfin choisir le topic : `
 
 ## 🗺️ Lancement de l’exploration et de la cartographie
 
-✅ **Lancer le script connect_and_launch_frontier :**
+✅ **Lancer le script `connect_and_launch_frontier.sh` :**
 ```bash
 ./connect_and_launch_frontier.sh
 ```
