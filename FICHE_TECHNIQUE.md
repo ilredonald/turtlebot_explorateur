@@ -8,76 +8,70 @@
 
 ## les noeuds dans le package `detection` :
 
-dans ce package nous avons 
-➔ objectrecognition
-Rôle : Ce nœud est conçu pour effectuer la détection d'objets dans les images en utilisant un modèle pré-entraîné YOLO (You Only Look Once). Lorsqu'un objet est détecté avec une confiance supérieure à un seuil défini, il dessine un rectangle autour de l'objet et republie l'image annotée.
+dans ce package nous avons 6 noeuds :
 
-Entrées :
+➔ `objectrecognition` : Ce nœud est conçu pour effectuer la détection d'objets dans les images en utilisant un modèle pré-entraîné YOLO (You Only Look Once). Lorsqu'un objet est détecté avec une confiance supérieure à un seuil défini, il dessine un rectangle autour de l'objet et republie l'image annotée.
 
-Image (de type sensor_msgs/Image) via le topic /camera/image (provient d'une caméra ou d'un nœud de traitement d'image).
+Entrées : Image (de type `sensor_msgs/Image`) via le topic `/camera/image` (provient d'une caméra ou d'un nœud de traitement d'image).
 
-Sorties :
+Sorties : Image annotée avec des rectangles autour des objets détectés (de type `sensor_msgs/Image`), publiée sur le topic `/camera/image_squared`.
 
-Image annotée avec des rectangles autour des objets détectés (de type sensor_msgs/Image), publiée sur le topic /camera/image_squared.
+➔ `turtlebot_distance_estimator` : Ce nœud calcule la distance d'un objet (carré vert) à partir de l'image capturée par la caméra, en utilisant des informations de la caméra et de l'odométrie du robot. Il publie la position estimée de l'objet dans le repère global du robot.
 
-➔ turtlebot_distance_estimator
-Rôle : Ce nœud calcule la distance d'un objet (carré vert) à partir de l'image capturée par la caméra, en utilisant des informations de la caméra et de l'odométrie du robot. Il publie la position estimée de l'objet dans le repère global du robot.
+**Entrées** : 
+    Image de la caméra (`sensor_msgs/Image`) via le topic `/camera/image_squared`.
 
-Entrées :
+    Odométrie du robot (`nav_msgs/Odometry`) via le topic `/odom`.
 
-Image de la caméra (sensor_msgs/Image) via le topic /camera/image_squared.
+**Sorties** :
 
-Odométrie du robot (nav_msgs/Odometry) via le topic /odom.
+    Image annotée (avec les informations de distance et d'angle) publiée sur le topic `/camera/image_annotated`.
 
-Sorties :
+    Position estimée de l'objet (`geometry_msgs/PoseStamped`) publiée sur le topic `/marker`.
 
-Image annotée (avec les informations de distance et d'angle) publiée sur le topic /camera/image_annotated.
+➔ `trace1` : Ce nœud publie la trajectoire du robot (odométrie) et ajoute des marqueurs visuels (croix rouges) aux positions parcourues par le robot, évitant de marquer les mêmes positions plusieurs fois.
 
-Position estimée de l'objet (geometry_msgs/PoseStamped) publiée sur le topic /marker.
+**Entrées** :
 
-➔ trace1
-Rôle : Ce nœud publie la trajectoire du robot (odométrie) et ajoute des marqueurs visuels (croix rouges) aux positions parcourues par le robot, évitant de marquer les mêmes positions plusieurs fois.
+    Odométrie (`nav_msgs/Odometry`) via le topic `/odom`.
 
-Entrées :
+    Position du marqueur (`geometry_msgs/PoseStamped`) via le topic `/marker`.
 
-Odométrie (nav_msgs/Odometry) via le topic /odom.
+**Sorties** :
 
-Position du marqueur (geometry_msgs/PoseStamped) via le topic /marker.
+    Trajectoire mise à jour (`nav_msgs/Path`) publiée sur le topic `/path`.
 
-Sorties :
-
-Trajectoire mise à jour (nav_msgs/Path) publiée sur le topic /path.
-
-Marqueur visuel (visualization_msgs/Marker) publié sur le topic /visualization_marker.
+    Marqueur visuel (`visualization_msgs/Marker`) publié sur le topic `/visualization_marker`.
 
 ➔ `traitement_image` : Ce nœud traite les images reçues depuis la caméra en les convertissant en niveaux de gris, puis en appliquant une égalisation d'histogramme adaptative (CLAHE) pour améliorer le contraste. Il republie ensuite l'image traitée.
 
-Entrées : Image de la caméra (`sensor_msgs/Image`) via le topic `/camera/image`.
+**Entrées** : Image de la caméra (`sensor_msgs/Image`) via le topic `/camera/image`.
 
-Sorties : Image traitée (`sensor_msgs/Image`) publiée sur le topic `/camera/image_processed`..
+**Sorties** : Image traitée (`sensor_msgs/Image`) publiée sur le topic `/camera/image_processed`..
 
 ➔ `qrcode` : Ce nœud est conçu pour détecter les QR codes dans les images traitées par le nœud traitement_image. Lorsqu'un QR code est détecté, il envoie un message contenant le statut de la détection et affiche une image annotée du QR code détecté.
 
-Entrées : Image traitée (`sensor_msgs/Image`) via le topic `/camera/image_processed` (provient du nœud traitement_image).
+**Entrées** : Image traitée (`sensor_msgs/Image`) via le topic `/camera/image_processed` (provient du nœud traitement_image).
 
-Sorties : Statut de la détection de QR code (`std_msgs/String`) publié sur le topic `/qr_status` (valeurs possibles : "QR code detected" ou "No QR code detected").
+**Sorties** : Statut de la détection de QR code (`std_msgs/String`) publié sur le topic `/qr_status` (valeurs possibles : "QR code detected" ou "No QR code detected").
 
 ➔ `ra2` : Ce nœud intègre un objet 3D (par exemple, une boîte) dans un flux d'image en temps réel, projetant cet objet sur l'image capturée par la caméra du robot. Il utilise la calibration de la caméra pour effectuer cette projection.
 
-Entrées : Image traitée provenant de la caméra du robot (type : `sensor_msgs/Image`) via le topic `/camera/image_processed`.
+**Entrées** : Image traitée provenant de la caméra du robot (type : `sensor_msgs/Image`) via le topic `/camera/image_processed`.
 
-Sorties : Image avec l'objet 3D projeté dessus (type : `sensor_msgs/Image`) publiée sur le topic `/image_with_3d_object`.
+**Sorties** : Image avec l'objet 3D projeté dessus (type : `sensor_msgs/Image`) publiée sur le topic `/image_with_3d_object`.
 
 ## les noeuds dans le package `frontier_exploration` :
 
 Pour la navigation, nous avons choisi d’utiliser l’algorithme frontier_exploration. Dans cette algorithme, nous rencontrons les noeuds suivant :
 
 ➔	`explore`: qui permet au robot d’explorer un environnement inconnu en detectant et en atteignant les forntières à l’aide du costmap_2d et du planificateur move_base.
+
 Les services utilisés : ( services intégré à l’environnement ROS)
 
-●	`/start` → démarre l’exploration (réactive le timer).
+  ●	`/start` → démarre l’exploration (réactive le timer).
 
-●	`/abort` → arrête l’exploration (annule les objectifs et stoppe le timer).
+  ●	`/abort` → arrête l’exploration (annule les objectifs et stoppe le timer).
 
 ➔	`frontier_search` : qui permet de detecter des forntières dans la carte locale du robot. Les frontières représentent les limites entre les zones connues et inconnues par le robot. 
 
