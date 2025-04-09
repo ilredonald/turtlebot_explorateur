@@ -1,8 +1,20 @@
-## TURTLEBOT EXPLORATEUR:
+## TURTLEBOT EXPLORATEUR :
 
 Ce dépôt décrit le système d’un TurtleBot capable d’explorer de façon autonome un environnement inconnu et de détecter les motifs présents dans l’arène. La navigation et la détection s’appuient sur ROS, un LiDAR et une caméra embarquée.
 
-## Matériel nécessaire:
+## Objectif du robot :
+
+•	Explorer automatiquement une zone inconnue.
+
+•	Éviter les obstacles.
+
+•	Cartographier l’environnement.
+
+•	Détecter des motifs spécifiques (formes, couleurs, QR codes, etc.).
+
+•	afficher les positions de ces motifs sur la carte.
+
+## Matériel nécessaire :
 
 •	TurtleBot (Burger ou Waffle)
 
@@ -15,7 +27,7 @@ Ce dépôt décrit le système d’un TurtleBot capable d’explorer de façon a
 •	Outils de visualisation (RViz, rqt, etc.)
 
 
-## 🚀 Lancement de la détection
+## 🚀 Lancement de la détection :
 
 ✅ **Lancer le launch `projet.launch` du package `detection`:**
 ```bash
