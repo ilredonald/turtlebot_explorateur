@@ -3,21 +3,23 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 #include <nav_msgs/Odometry.h>
-#include <tf/transform_datatypes.h>
+#include <tf/transform_datatypes.h>  // Ajouté pour la fonction getYaw
 #include <geometry_msgs/PoseStamped.h>
 
 #define FOCALE_PX 627       // Focale en pixels
-#define HAUTEUR_OBJET 1.65 
+#define HAUTEUR_OBJET 0.18  // Hauteur du TurtleBot Burger en mètres
 #define LARGEUR_IMAGE 640   
 #define HAUTEUR_IMAGE 480
 
 class ImageAnnotator {
 public:
-    ImageAnnotator(ros::NodeHandle& nh) {
+    ImageAnnotator() {
         // Initialiser le gestionnaire de nœud et les abonnements
+        ros::NodeHandle nh;
+
         image_sub_ = nh.subscribe("/camera/image_squared", 1, &ImageAnnotator::imageCallback, this);
         image_pub_ = nh.advertise<sensor_msgs::Image>("/camera/image_annotated", 1);
-        marker_pub = nh.advertise<geometry_msgs::PoseStamped>("/marker", 1);
+        marker_pub = nh.advertise<geometry_msgs::PoseStamped>("/marker",1);
         odom_sub_ = nh.subscribe("/odom", 1, &ImageAnnotator::odomCallback, this);
     }
 
@@ -106,12 +108,12 @@ public:
                         cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0, 255, 0), 2);
 
             // Publier l'image annotée
-            sensor_msgs::ImagePtr output_msg = cv_bridge::toCvCopy(msg, "bgr8")->toImageMsg();
+            sensor_msgs::ImagePtr output_msg = cv_bridge::CvImage(msg->header, "bgr8", cv_ptr->image).toImageMsg();
             image_pub_.publish(output_msg);
 
             // Calcul de la position de l'objet par rapport à l'origine de l'odom
-            float object_x_global = robot_x_ + x * cos(robot_orientation_) - y * sin(robot_orientation_);
-            float object_y_global = robot_y_ + x * sin(robot_orientation_) + y * cos(robot_orientation_);
+	    float object_x_global = robot_x_ + x * cos(robot_orientation_) - y * sin(robot_orientation_);
+	    float object_y_global = robot_y_ + x * sin(robot_orientation_) + y * cos(robot_orientation_);
 
             // Afficher les coordonnées globales de l'objet
             ROS_INFO("Position de l'objet dans le repère odom : x = %f, y = %f", object_x_global, object_y_global);
@@ -142,17 +144,7 @@ private:
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "image_annotator");
-    ros::NodeHandle nh;
-
-    ImageAnnotator annotator(nh);
-
-    ros::Rate loop_rate(10);
-
-    while (ros::ok()) {
-
-        ros::spinOnce();
-        loop_rate.sleep();
-    }
-
+    ImageAnnotator annotator;
+    ros::spin();
     return 0;
 }

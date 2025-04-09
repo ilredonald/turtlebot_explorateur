@@ -1,16 +1,16 @@
 <launch>
 
-    <node name="traitement_image" pkg="projettur" type="traitement_image_node" output="screen" />
+    <node name="traitement_image" pkg="detection" type="traitement_image_node" output="screen" />
 
-    <node name="qrcode" pkg="projettur" type="qrcode_node" output="screen" />
+    <node name="qrcode" pkg="detection" type="qrcode_node" output="screen" />
 
-    <node name="ra2" pkg="projettur" type="ra2_node" output="screen" />
+    <node name="ra2" pkg="detection" type="ra2_node" output="screen" />
     
-    <node name="objectrecognition" pkg="projettur" type="objectrecognition_node" output="screen" />
+    <node name="objectrecognition" pkg="detection" type="objectrecognition_node" output="screen" />
 
-    <node name="trace1" pkg="projettur" type="trace1_node" output="screen" />
+    <node name="trace1" pkg="detection" type="trace1_node" output="screen" />
     
-    <node name="turtlebot_distance_estimator" pkg="projettur" type="turtlebot_distance_estimator_node" output="screen" />
+    <node name="turtlebot_distance_estimator" pkg="detection" type="turtlebot_distance_estimator_node" output="screen" />
 
 </launch>
 
