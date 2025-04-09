@@ -1,6 +1,19 @@
 ## TURTLEBOT EXPLORATEUR:
 
-Ce document présente le fonctionnement d’un TurtleBot capable d’explorer un environnement inconnu de manière autonome et de détecter des motifs présents dans l’arène. Le robot utilise ROS, le LIDAR et une caméra pour naviguer et reconnaître certains éléments
+Ce document présente le fonctionnement d’un TurtleBot capable d’explorer un environnement inconnu de manière autonome et de détecter des motifs présents dans l’arène. Le robot utilise ROS, le LIDAR et une caméra pour naviguer et reconnaître certains éléments.
+
+## Matériel nécessaire:
+
+•	TurtleBot (Burger ou Waffle)
+
+•	LIDAR
+
+•	Caméra RGB
+
+•	Ordinateur avec ROS (Noetic ou autre)
+
+•	Outils de visualisation (RViz, rqt, etc.)
+
 
 ## 🚀 Lancement de la détection
 
