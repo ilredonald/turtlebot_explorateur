@@ -9,64 +9,64 @@
 ## les noeuds dans le package `detection` :
 
 dans ce package nous avons 
-
-`objectrecognition` :
-
-Rôle : Reconnaît et détecte des objets à partir des images capturées par le robot.
+➔ objectrecognition
+Rôle : Ce nœud est conçu pour effectuer la détection d'objets dans les images en utilisant un modèle pré-entraîné YOLO (You Only Look Once). Lorsqu'un objet est détecté avec une confiance supérieure à un seuil défini, il dessine un rectangle autour de l'objet et republie l'image annotée.
 
 Entrées :
 
-Image du robot (type : sensor_msgs/Image).
+Image (de type sensor_msgs/Image) via le topic /camera/image (provient d'une caméra ou d'un nœud de traitement d'image).
 
 Sorties :
 
-Boîtes englobantes des objets détectés (type : sensor_msgs/PointCloud2 ou autre format adapté).
+Image annotée avec des rectangles autour des objets détectés (de type sensor_msgs/Image), publiée sur le topic /camera/image_squared.
 
-2. trace1
-Rôle : Trace la trajectoire du robot et marque la position d’un objet détecté.
+➔ turtlebot_distance_estimator
+Rôle : Ce nœud calcule la distance d'un objet (carré vert) à partir de l'image capturée par la caméra, en utilisant des informations de la caméra et de l'odométrie du robot. Il publie la position estimée de l'objet dans le repère global du robot.
 
 Entrées :
 
-Position de l'objet détecté (type : geometry_msgs/PointStamped via /point_rouge).
+Image de la caméra (sensor_msgs/Image) via le topic /camera/image_squared.
 
-Trajectoire du robot (type : nav_msgs/Odometry ou similaire).
+Odométrie du robot (nav_msgs/Odometry) via le topic /odom.
 
 Sorties :
 
-Trajectoire du robot sur la carte.
+Image annotée (avec les informations de distance et d'angle) publiée sur le topic /camera/image_annotated.
 
-Position de l'objet marqué sur la carte.
+Position estimée de l'objet (geometry_msgs/PoseStamped) publiée sur le topic /marker.
 
-3. turtlebot_distance_estimator
-Rôle : Estime la distance à un objet détecté et publie sa position.
+➔ trace1
+Rôle : Ce nœud publie la trajectoire du robot (odométrie) et ajoute des marqueurs visuels (croix rouges) aux positions parcourues par le robot, évitant de marquer les mêmes positions plusieurs fois.
 
 Entrées :
 
-Image de profondeur (type : sensor_msgs/Image).
+Odométrie (nav_msgs/Odometry) via le topic /odom.
 
-Coordonnées de l'objet dans l’image (type : sensor_msgs/PointCloud2 ou similaire).
+Position du marqueur (geometry_msgs/PoseStamped) via le topic /marker.
 
 Sorties :
 
-Position de l’objet dans l’espace réel (type : geometry_msgs/PointStamped via /point_rouge).
+Trajectoire mise à jour (nav_msgs/Path) publiée sur le topic /path.
 
-4. ra2
-Rôle : Non précisé dans les informations précédentes. Besoin de détails pour ce nœud.
+Marqueur visuel (visualization_msgs/Marker) publié sur le topic /visualization_marker.
 
-Entrées :
+➔ `traitement_image` : Ce nœud traite les images reçues depuis la caméra en les convertissant en niveaux de gris, puis en appliquant une égalisation d'histogramme adaptative (CLAHE) pour améliorer le contraste. Il republie ensuite l'image traitée.
 
-Pas d'informations spécifiques fournies.
+Entrées : Image de la caméra (`sensor_msgs/Image`) via le topic `/camera/image`.
 
-Sorties :
+Sorties : Image traitée (`sensor_msgs/Image`) publiée sur le topic `/camera/image_processed`..
 
-Pas d'informations spécifiques fournies.
+➔ `qrcode` : Ce nœud est conçu pour détecter les QR codes dans les images traitées par le nœud traitement_image. Lorsqu'un QR code est détecté, il envoie un message contenant le statut de la détection et affiche une image annotée du QR code détecté.
 
-5. qrcode
-Rôle : Détecte et traite les QR codes dans l’environnement du robot.
+Entrées : Image traitée (`sensor_msgs/Image`) via le topic `/camera/image_processed` (provient du nœud traitement_image).
 
-Entrées :
+Sorties : Statut de la détection de QR code (`std_msgs/String`) publié sur le topic `/qr_status` (valeurs possibles : "QR code detected" ou "No QR code detected").
 
-Image du robot ou capture vidéo (type : sensor_msgs/Image).
+➔ `ra2` : Ce nœud intègre un objet 3D (par exemple, une boîte) dans un flux d'image en temps réel, projetant cet objet sur l'image capturée par la caméra du robot. Il utilise la calibration de la caméra pour effectuer cette projection.
+
+Entrées : Image traitée provenant de la caméra du robot (type : `sensor_msgs/Image`) via le topic `/camera/image_processed`.
+
+Sorties : Image avec l'objet 3D projeté dessus (type : `sensor_msgs/Image`) publiée sur le topic `/image_with_3d_object`.
 
 ## les noeuds dans le package `frontier_exploration` :
 
@@ -76,13 +76,15 @@ Pour la navigation, nous avons choisi d’utiliser l’algorithme frontier_explo
 Les services utilisés : ( services intégré à l’environnement ROS)
 
 ●	`/start` → démarre l’exploration (réactive le timer).
+
 ●	`/abort` → arrête l’exploration (annule les objectifs et stoppe le timer).
 
-➔	`frontier_search` : qui permet de detecter des forntières dans la carte locale du robot. Les frontières représentent les limites entre les zones connues et inconnues par le robot. Aucun E/S.
-Il complete une liste de frontier qui sera directement appelé dans le noeud explore.
+➔	`frontier_search` : qui permet de detecter des forntières dans la carte locale du robot. Les frontières représentent les limites entre les zones connues et inconnues par le robot. 
 
-➔	`costmap_2d` :  qui gere un costmap_2d dans le système robotique. Le costmap represente une carte de l’environnement du robot où différents valeurs indiquent les coùts de deplacement de chaque cellule de la carte.
-Il s’abonne au topic costmap pour recevoir les mises à jour de la carte.
+Aucun E/S. Il complete une liste de frontier qui sera directement appelé dans le noeud explore.
 
-➔	`node` : il initialise le noeud explore.
+➔	`costmap_2d` :  qui gere un costmap_2d dans le système robotique. Le `costmap` represente une carte de l’environnement du robot où différents valeurs indiquent les coûts de deplacement de chaque cellule de la carte.
+Il s’abonne au topic `/costmap` pour recevoir les mises à jour de la carte.
+
+➔	`node` : il initialise le noeud `explore`.
 
