@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>detection</name>
+  <version>0.0.1</version>
+  <description>The detection package for QR code detection</description>
+
+  <!-- Maintainer information -->
+  <maintainer email="ubuntu@todo.todo">ubuntu</maintainer>
+
+  <!-- License for the package -->
+  <license>TODO</license>
+
+  <!-- Dependencies -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- ROS dependencies -->
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+
+  <!-- OpenCV for image processing -->
+  <build_depend>libopencv-dev</build_depend>
+  <exec_depend>libopencv-dev</exec_depend>
+
+  <!-- Test dependencies (optional, if you use tests in the future) -->
+  <!-- <test_depend>gtest</test_depend> -->
+
+  <!-- Export section for other tools that need additional information -->
+  <export>
+    <!-- Additional export tags go here if necessary -->
+  </export>
+</package>
