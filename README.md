@@ -27,13 +27,18 @@ Ce dépôt décrit le système d’un TurtleBot capable d’explorer de façon a
 •	Outils de visualisation (RViz, rqt, etc.)
 
 
-## 🚀 Lancement de la détection :
+## 🚀 🗺️ Lancement du programme :
 
-✅ **Lancer le launch `projet.launch` du package `detection`:**
+✅ **Lancer le script `connect_and_launch_frontier1.sh` :**
 ```bash
-roslaunch detection projet.launch
+./connect_and_launch_frontier1.sh
 ```
-## Configurations :
+
+ce programme lancera et la navigation et la détection.
+
+## 🚀 Configurations pour la detection :
+
+Nb : On vous demandera de renseigner l’adresse IP d’un turtlebot pour s’y connecter.
 
 ✅ **Dans rqt, cliquer sur Plugins :**
 
@@ -44,11 +49,6 @@ choisir `Visualization` et cliquer sur `Image View`et enfin choisir le topic : `
 •	`/marker` : pour visualiser les marques des motifs détectés sur la carte.
 
 •	`/path` : pour visualiser le chemin parcouru par le robot.
+ 
 
-## 🗺️ Lancement de l’exploration et de la cartographie
 
-✅ **Lancer le script `connect_and_launch_frontier.sh` :**
-```bash
-./connect_and_launch_frontier.sh
-```
-Nb : On vous demandera de renseigner l’adresse IP d’un turtlebot pour s’y connecter.
