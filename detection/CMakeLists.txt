@@ -30,6 +30,8 @@ include_directories(
 # Ajouter les exécutables
 add_executable(traitement_image_node src/traitement_image.cpp)
 add_executable(qrcode_node src/qrcode.cpp) 
+add_executable(trace1_node src/trace1.cpp) 
+add_executable(turtlebot_distance_estimator_node src/turtlebot_distance_estimator.cpp) 
 add_executable(ra2_node src/ra2.cpp)
 add_executable(objectrecognition_node src/objectrecognition.cpp)  # Ajout du noeud objectrecognition
 
@@ -55,3 +57,10 @@ target_link_libraries(objectrecognition_node  # Lien avec les bibliothèques né
   ${OpenCV_LIBRARIES}
 )
 
+target_link_libraries(trace1_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(turtlebot_distance_estimator_node
+  ${catkin_LIBRARIES}
+)
