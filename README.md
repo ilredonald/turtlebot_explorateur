@@ -33,12 +33,11 @@ Ce dépôt décrit le système d’un TurtleBot capable d’explorer de façon a
 ```bash
 ./connect_and_launch_frontier1.sh
 ```
-
 ce programme lancera et la navigation et la détection.
 
-## 🚀 Configurations pour la detection :
-
 Nb : On vous demandera de renseigner l’adresse IP d’un turtlebot pour s’y connecter.
+
+## 🚀 Configurations pour la detection :
 
 ✅ **Dans rqt, cliquer sur Plugins :**
 
